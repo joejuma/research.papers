@@ -183,6 +183,23 @@ In other words, the average frequency-weighted bit-deviation between the two pro
 
 This is however not the same measure as my own metric: the bits of entropy provided by a given event in relation to the total model.
 
+\section{Conclusion}
+Herein I've formulated (what appears to be) a new metric of observation-based context entropy measurement, which I'll denote as Juma Antecedent Entropy or Observed Context Entropy, $\beta_{J}(y,X)$.\
+
+\begin{equation}
+    \beta_{J}(y,x,Y) = log_{2}(\#X) - log_{2}(P(y|x)^{-1})
+\end{equation}
+
+Where,
+\begin{enumerate}
+    \item $\beta_{J}(y,x,Y)$ is the bits of context provided by an event $x$ in influencing the subsequent probability of event $y$.
+    \item $Y$ is the set of all possible output observations regardless of contexts.
+    \item $\#Y$ is the number of elements in the set ("cardinality of") $Y$.
+    \item $y$ is a specific output event.
+    \item $x$ is some previously observed event that effects the probability of a subsequent event $y$ transpiring.
+    \item $P(y|x)$ is the probability of output event $y$, given event $x$.
+\end{enumerate}
+
 % References
 \bibliographystyle{plain}
 \bibliography{references}
