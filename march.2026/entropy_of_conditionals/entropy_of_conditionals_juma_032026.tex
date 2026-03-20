@@ -1,0 +1,190 @@
+\documentclass{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\usepackage{marginnote}
+
+% Configuration
+\renewcommand{\abstractname}{ABSTRACT}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
+
+\newcounter{para}
+\newcommand{\p}{%
+  \refstepcounter{para}%
+  \marginnote{\footnotesize \lbrack \thepara \rbrack}[1em]%
+  \noindent
+}
+
+% Metadata
+\title{Entropy of Conditionals in Probabilistic Models Given Observed Frequencies}
+\author{
+    \textbf{Joseph M. Juma} \\
+    Iki Software L.L.C. \\
+    \texttt{joseph@ikisoftware.com}
+}
+\date{March 2026}
+
+% Paper
+\begin{document}
+
+% Title
+\maketitle
+
+% Abstract
+\begin{abstract}
+    \noindent
+    A formulation is provided for determining the context entropy in bits of a given observed event in a larger associative-frequency based model. Then a comparative analysis of related formula is provided including Shannon information, point-wise mutual information and Kullback-Leibler divergence.
+\end{abstract}
+
+% Introduction
+\section{Formulation}
+Given a collection of observations of input values and corresponding output mappings, a collection of frequencies may be compiled such that for a given input, the probability of a given output is known (i.e. $P(y|x)$). The number of unique output values (i.e. $\#Y$) can be used to calculate the number of bits (”entropy”; $\beta_{y}$) needed to represent each unique output.
+
+\begin{equation}
+\beta_{y} = \lceil \frac{log(\#Y)}{log(2)} \rceil = log_2(\#Y)
+\end{equation}
+
+Given the entropy of the output set, it’s possible to relate one-bit of information to a change in probability for a mapping ($\delta_{P}$).
+
+\begin{equation}
+\delta_{P} = 2^{-\beta_{y} - 1}
+\end{equation}
+
+However, not all inputs have a homogenous contribution to the possible output probability. For example, if a given input results in a 50\% probability of a given output, that would mean that value is equal to $\beta_{y} - 1$ bits of entropy, since
+
+\begin{equation}
+2^{-\beta_{y} - (\beta_{y} - 1)} = 2^{-1} = 0.5
+\end{equation}
+
+We can therefore use the conditional probability (i.e. $P(y|x)$) and domain entropy to determine the entropy of a given input value in this system.
+
+\begin{equation}
+\begin{gathered}
+2^{-(\beta_{y} - z)} = P(y|x) \\
+2^{\beta_{y} - z} = P(y|x)^{-1}\\
+\beta_{y} - z= \frac{log(P(y|x)^{-1})}{log(2)}\\
+-z = \frac{log(P(y|x)^{-1})}{log(2)} - \beta_{y}\\
+z = \beta_{y} - \frac{log(P(y|x)^{-1})}{log(2)} = \beta_{y} - log_2(P(y|x)^{-1})
+\end{gathered}
+\end{equation}
+
+This allows us to employ the following formula to compute the number of bits (i.e. $z$) that a given context value (i.e. $x$) provides in relating to the output value $y$.
+
+\begin{equation}
+z = \beta_{y} - \frac{log(P(y|x)^{-1})}{log(2)} = \beta_{y} - log_2(P(y|x)^{-1})
+\end{equation}
+
+Which may be used to grade the entropy of given contextual information, or find use in some applicable manner in systems engineering.
+
+% Super-Positio Collapse
+\section{Related Concepts}
+Upon further investigation, it would appear this derivation is related to several other formula.
+
+% Shannon Information (Surprisal)
+\subsection{Shannon Information (Surprisal)}
+
+First, Claude Shannon defined **Shannon information** or **surprisal** (aka “information content” or “self-information”) which may be thought of as “how surprising a certain outcome is”. This is the formula,
+
+\begin{equation}
+I_{x} = \frac{log(P(x)^{-1})}{log(2)} = log_{2}(P(x)^{-1}) = -log_{2}(P(x))
+\end{equation}
+
+So I could rewrite my formula with the definition of surprisal (i.e. $I_{(y|x)}$) as,
+
+\begin{equation}
+z = \beta_{y} - I_{(y|x)}
+\end{equation}
+
+As always, Shannon’s work is of great benefit.
+
+% Point-wise Mutual Information (PMI)
+\subsection{Point-Wise Mutual Information (PMI)}
+
+Second, there’s **Point-Wise Mutual Information** (PMI) the deviation in bits of a conditional event occurring to the event occurring independently. This concept was introduced by Robert Faro in 1961. This is only vaguely the same as what I’ve measured.
+
+\begin{equation}
+pmi(x;y) = log_{2} \frac{p(x,y)}{p(x)p(y)} = log_{2} \frac{p(x|y)}{p(x)} = log_{2} \frac{p(y|x)}{p(y)}
+\end{equation}
+
+To understand this, it benefits breaking it down. First, we calculate the ratio between an event $y$ given an event $x$ has already occurred (i.e. $P(y|x)$) and the event $y$ occurring independent of event $x$ (i.e. $P(y) = P(y|x) + P(y|!x)$).
+
+For example, let’s presume $P(x) = 0.6$ and $P(z) = 0.4$. Then the outcome $y$ given each of these are respectively, $P(y|x) = 0.75$ and $P(y|z) = 0.5$. We can now say that the probability of $y$ is given by the formula,
+
+\begin{equation}
+P(y) = P(y|x)P(x) + P(y|z)P(z)\\P(y) = (0.75 * 0.6) + (0.4 * 0.5) = 0.45 + 0.2 = 0.65
+\end{equation}
+
+We can then look at the ratio of $y$ occuring given $x$ to $y$ occuring in general,
+\begin{equation}
+\frac{P(y|x)}{P(y)}
+\end{equation}
+
+And if we want to represent that ratio in bits, we apply the 2-logarithm,
+\begin{equation}
+log_2(\frac{P(y|x)}{P(y)})
+\end{equation}
+
+This can also be thought of as the *bits of deviation from independence of a given conditional probability*. At first this might not make sense why *deviation* isn’t instead $P(y|x) - P(y)$. However, consider this metric again: if $y$ is truly independent no matter what, then $P(y|x) = P(y)$. In other words, $\frac{P(y|x)}{P(y)} = 1$. Now if this weren’t being passed into the logarithm, it wouldn’t make sense - but once passed into a logarithm, $log_2(1) = 0$. So we can say there’s 0 bits of deviation between the conditional and independent forms.
+
+This is distinct from my own measurement, as I was measuring the *bits of deviation from the probability contribution of a single bit of information.* Given $\beta_{y}^{-1} = log_2(\#Y)^{-1}$ is the probability contributed by a single bit in the system, then I’m calculating how many bits one conditional represents and subtracting that from the number of bits of the system.
+
+This is to say that PMI is the deviation in bits of a conditional to independent probability, while my measure is the deviation in bits between a full model and an observed outcome, giving the bit content of that observed outcome.
+
+% Kullback-Liebler Divergence (KL Divergence)
+\subsection{Kullback-Lieblier Divergence (KL Divergence)}
+
+Another related metric is the kullback-leibler divergence (KL divergence) which is a statistical distance metric between two probability distributions (e.g. $P$, $Q$) defined on the same sample space $X$.
+
+\begin{equation}
+D_{KL}(P||Q) = \sum_{x \in X}P(x)\ log_2\frac{P(x)}{Q(x)}
+\end{equation}
+
+To understand this we should break down the terms. First, we know from PMI that $log_{2}(\frac{P(x)}{Q(x)}$ is the deviation in bits between the probability of $x$ using the model $P$ and the probability of $x$ using the model $Q$. 
+
+On the other hand, if we look at $\sum_{x \in X}P(x)$ we can recognize that this will sum to 1, and that each value $P(x)$ is actually related to the frequency of $x$ outcomes observed.
+
+\begin{equation}
+P(x_i) = \frac{F(x_i)}{\sum_{j = 0}^{\# X} F(x_{j})}
+\end{equation}
+
+This means we can say that the formula $P(x_i)\ log_2\frac{P(x_i)}{Q(x_i)}$ is the probability-weighted deviation in bits between models $P$ and $Q$ with weighting from $P$. This produces an output when summed that can also be thought of as a broad “average” metric of the difference between the two models. To better grasp this notion of “average”, we can break apart the probability-frequency relation.
+
+\begin{equation}
+\sum_{x \in X}P(x) = \sum_{x\in X}\frac{F(x)}{\sum_{y \in X} F(y)}  = \frac{1}{\sum_{y \in X}F(y)} * \sum_{x|in Y} F(x)
+\end{equation}
+
+If we look at this here, we can intuit that the sum of all frequencies (i.e. observations) is going to be the size of the output domain, which we can just denote as $N$.
+
+\begin{equation}
+\sum_{y\in X} F(y) = N
+\end{equation}
+
+Which allows us to rewrite the prior formula as,
+
+\begin{equation}
+\sum_{x\in X}P(x) = \frac{1}{N} * \sum _{x \in X} F(x)
+\end{equation}
+
+Given that an average is,
+\begin{equation}
+\frac{1}{N} \sum_{x \in X} x
+\end{equation}
+
+We can say this is akin to the average of frequencies. Given this term though, we may also re-write the original KL-divergence as,
+
+\begin{equation}
+D_{KL}(P||Q) = \frac{1}{N} \sum_{x \in X}F(x)  log_{2}\frac{P(x)}{Q(x)}
+\end{equation}
+
+In other words, the average frequency-weighted bit-deviation between the two probabilistic models $P$ and $Q$. This is a \textbf{very} useful formula given by Kullback and Leibler in 1951 \cite{kullback1951}.
+
+This is however not the same measure as my own metric: the bits of entropy provided by a given event in relation to the total model.
+
+% References
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
