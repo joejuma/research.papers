@@ -86,7 +86,7 @@ Upon further investigation, it would appear this derivation is related to severa
 % Shannon Information (Surprisal)
 \subsection{Shannon Information (Surprisal)}
 
-First, Claude Shannon defined **Shannon information** or **surprisal** (aka “information content” or “self-information”) which may be thought of as “how surprising a certain outcome is”. This is the formula,
+First, Claude Shannon defined \textbf{Shannon information} or \textbf{surprisal} (aka “information content” or “self-information”) which may be thought of as “how surprising a certain outcome is”. This is the formula,
 
 \begin{equation}
 I_{x} = \frac{log(P(x)^{-1})}{log(2)} = log_{2}(P(x)^{-1}) = -log_{2}(P(x))
@@ -103,7 +103,7 @@ As always, Shannon’s work is of great benefit.
 % Point-wise Mutual Information (PMI)
 \subsection{Point-Wise Mutual Information (PMI)}
 
-Second, there’s **Point-Wise Mutual Information** (PMI) the deviation in bits of a conditional event occurring to the event occurring independently. This concept was introduced by Robert Faro in 1961. This is only vaguely the same as what I’ve measured.
+Second, there’s \textbf{Point-Wise Mutual Information} (PMI) the deviation in bits of a conditional event occurring to the event occurring independently. This concept was introduced by Robert Faro in 1961. This is only vaguely the same as what I’ve measured.
 
 \begin{equation}
 pmi(x;y) = log_{2} \frac{p(x,y)}{p(x)p(y)} = log_{2} \frac{p(x|y)}{p(x)} = log_{2} \frac{p(y|x)}{p(y)}
@@ -127,16 +127,16 @@ And if we want to represent that ratio in bits, we apply the 2-logarithm,
 log_2(\frac{P(y|x)}{P(y)})
 \end{equation}
 
-This can also be thought of as the *bits of deviation from independence of a given conditional probability*. At first this might not make sense why *deviation* isn’t instead $P(y|x) - P(y)$. However, consider this metric again: if $y$ is truly independent no matter what, then $P(y|x) = P(y)$. In other words, $\frac{P(y|x)}{P(y)} = 1$. Now if this weren’t being passed into the logarithm, it wouldn’t make sense - but once passed into a logarithm, $log_2(1) = 0$. So we can say there’s 0 bits of deviation between the conditional and independent forms.
+This can also be thought of as the \textit{bits of deviation from independence of a given conditional probability}. At first this might not make sense why \textit{deviation} isn’t instead $P(y|x) - P(y)$. However, consider this metric again: if $y$ is truly independent no matter what, then $P(y|x) = P(y)$. In other words, $\frac{P(y|x)}{P(y)} = 1$. Now if this weren’t being passed into the logarithm, it wouldn’t make sense - but once passed into a logarithm, $log_2(1) = 0$. So we can say there’s 0 bits of deviation between the conditional and independent forms.
 
-This is distinct from my own measurement, as I was measuring the *bits of deviation from the probability contribution of a single bit of information.* Given $\beta_{y}^{-1} = log_2(\#Y)^{-1}$ is the probability contributed by a single bit in the system, then I’m calculating how many bits one conditional represents and subtracting that from the number of bits of the system.
+This is distinct from my own measurement, as I was measuring the \textit{bits of deviation from the probability contribution of a single bit of information.} Given $\beta_{y}^{-1} = log_2(\#Y)^{-1}$ is the probability contributed by a single bit in the system, then I’m calculating how many bits one conditional represents and subtracting that from the number of bits of the system.
 
 This is to say that PMI is the deviation in bits of a conditional to independent probability, while my measure is the deviation in bits between a full model and an observed outcome, giving the bit content of that observed outcome.
 
 % Kullback-Liebler Divergence (KL Divergence)
 \subsection{Kullback-Lieblier Divergence (KL Divergence)}
 
-Another related metric is the kullback-leibler divergence (KL divergence) which is a statistical distance metric between two probability distributions (e.g. $P$, $Q$) defined on the same sample space $X$.
+Another related metric is the \textbf{Kullback-Leibler divergence} (KL divergence) which is a statistical distance metric between two probability distributions (e.g. $P$, $Q$) defined on the same sample space $X$.
 
 \begin{equation}
 D_{KL}(P||Q) = \sum_{x \in X}P(x)\ log_2\frac{P(x)}{Q(x)}
