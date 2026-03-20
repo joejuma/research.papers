@@ -187,7 +187,7 @@ This is however not the same measure as my own metric: the bits of entropy provi
 Herein I've formulated (what appears to be) a new metric of observation-based context entropy measurement, which I'll denote as \textbf{Juma Antecedent Entropy} or \textbf{Observed Context Entropy}, $\beta_{J}(y,x,Y)$.\
 
 \begin{equation}
-    \beta_{J}(y,x,Y) = {\lceil log_{2}(\#Y) \rceil} - log_{2}(P(y|x)^{-1})
+    \beta_{J}(y,x,Y) = {\lceil log_{2}(\#Y) \rceil} - log_{2}(P(y|x)^{-1}) = log_{2}({\lceil \#Y \rceil}P(y|x))
 \end{equation}
 
 Where,
@@ -199,6 +199,8 @@ Where,
     \item $x$ is some previously observed event that effects the probability of a subsequent event $y$ transpiring.
     \item $P(y|x)$ is the probability of output event $y$, given event $x$.
 \end{enumerate}
+
+While this is ultimately not a necessarily unique formulation, in the wider context of application to conditional observations and antecedent entropy it poses a useful metric by which to engineer systems such as SPC learning mechanisms.
 
 % References
 \bibliographystyle{plain}
